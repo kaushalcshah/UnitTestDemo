@@ -1,7 +1,18 @@
-﻿namespace CountMarbles
+﻿using Microsoft.Extensions.Logging;
+
+namespace CountMarbles
 {
     public class CountMarbles
     {
+        private IColorWeightService _colorWeightService;
+        private ILogger _logger;
+        
+        public CountMarbles(IColorWeightService colorWeightService, ILogger<CountMarbles> logger)
+        {
+            _colorWeightService = colorWeightService;
+            _logger = logger;
+        }
+
         public Dictionary<string, int> Counter(string[] marbles)
         {
             if (marbles == null)
@@ -12,13 +23,16 @@
             foreach (var marble in marbles)
             {
                 if (string.IsNullOrWhiteSpace(marble)) continue;
+                var weight = _colorWeightService.GetColorWeight(marble);
                 if (counter.ContainsKey(marble))
                 {
-                    counter[marble] = counter[marble] + 1;
+                    _logger.LogDebug($"Updated {marble} marbel with adding weight {weight}");
+                    counter[marble] = counter[marble] + weight;
                 }
                 else
                 {
-                    counter[marble] = 1;
+                    _logger.LogDebug($"Added {marble} marbel with weight {weight}");
+                    counter[marble] = weight;
                 }
             }
             return counter;
