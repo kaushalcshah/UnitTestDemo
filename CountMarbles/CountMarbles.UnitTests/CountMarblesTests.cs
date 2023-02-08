@@ -1,8 +1,6 @@
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
-using Microsoft.VisualStudio.TestTools.UnitTesting.Logging;
 using Moq;
-using System.Diagnostics;
 
 namespace CountMarbles.UnitTests
 {
@@ -10,7 +8,6 @@ namespace CountMarbles.UnitTests
     public class CountMarblesTests
     {
         private CountMarbles count;
-
 
         [TestMethod]
         public void EmptyArrayShouldReturnEmptyDictionary()
@@ -71,7 +68,6 @@ namespace CountMarbles.UnitTests
             colorServiceMock.Verify(mock => mock.GetColorWeight(It.IsAny<string>()), Times.Never);
         }
 
-
         [TestMethod]
         public void ColorArrayShouldReturnCorrectCountDictionary()
         {
@@ -105,7 +101,6 @@ namespace CountMarbles.UnitTests
             result.Should().HaveElementAt(2, new KeyValuePair<string, int>("green", 5));
             colorServiceMock.Verify(mock => mock.GetColorWeight(It.IsAny<string>()), Times.Exactly(4));
         }
-
 
         [TestMethod]
         public void ArrayWithEmptyOrNullValuesShouldIgnoreEmptyOrNullValues()
